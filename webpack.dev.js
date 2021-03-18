@@ -1,5 +1,6 @@
 const { merge } = require('webpack-merge');
 const dotenv = require('dotenv').config({ path: './.env' });
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -22,4 +23,10 @@ module.exports = merge(common, {
       },
     ],
   },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: './src/client/views/index.html',
+      filename: './index.html',
+    }),
+  ],
 });
