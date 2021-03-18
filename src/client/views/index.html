@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Christian Westpfahl">
+
+    <title>¿What the Text?</title>
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <header>
+        <nav class="navbar navbar-expand-sm">
+            <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+                <span class="navbar-brand">¿What the Text?</span>
+            </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+        <div class="col-12">
+            <h1>Analyze website content</h1>
+            <p class="lead">Use a sentiment analysis that examines texts and detects their polarity, subjectivity, irony and emotional agreement. Get a quick glimpse about any text you find online.</p>
+            <form class="needs-validation">
+                <div class="form-row">
+                    <div class="col-12 mb-3">
+                        <label for="url-input">Source to check:</label>
+                        <input id="url-input" type="text" class="form-control" placeholder="http(s)://example.com"
+                            pattern="http(s?)://.*" type="url" required onfocus="this.value=''">
+                        <div class="invalid-feedback">
+                            Please enter a valid website address including http:// or https://
+                        </div>
+                    </div>
+                </div>
+                <button id="url-submit" class="btn btn-primary" type="submit" onclick="Client.submitURL(event)">Submit
+                    website</button>
+            </form>
+            <div id="loading-status" class="d-none">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <ul id="results" class="list-group mt-5">
+            </ul>
+        </div>
+    </main>
+
+    <footer class="mt-auto d-flex align-items-center">
+        <div class="container">
+            <div class="col-12">
+                <span class="text-muted">This tool uses the <a href="https://www.meaningcloud.com/">MeaningCloud</a>
+                    Sentiment Analysis</span>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

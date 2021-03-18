@@ -1,0 +1,36 @@
+@import "variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/spinners";
+@import "~bootstrap/scss/utilities";
+@import "header";
+@import "footer";
+
+/* 
+  Styles adapted from 
+  https://getbootstrap.com/docs/4.0/examples/sticky-footer-navbar/sticky-footer-navbar.css
+*/
+
+html {
+    position: relative;
+    min-height: 100%;
+    hyphens: auto;
+}
+
+body > .container {
+    padding: 60px 15px 60px;
+}
+
+code {
+    font-size: 80%;
+}
