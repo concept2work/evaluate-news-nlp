@@ -39,17 +39,6 @@ In development mode `PORT_DEV` specifies the server's port, while `PORT_DEV_PROX
 ## Start of the application
 It is possible to render a working home page for development and production mode.
 
-### Development mode
-It is necessary to start the express server for the backend and furthermore build the webpack bundle for the frontend. Use the following command to start the backend server:
-````
-npm run start-dev
-````
-In a new terminal window start generate the webpack development build for the client server:
-````
-npm run build-dev
-````
-Please note that both backend and backend server run on the same port. Requests from the client to the backend will be carried out via a proxy with a different port.
-
 ### Production mode
 In production mode it is necessary to run a build first:
 ````
@@ -60,3 +49,14 @@ After that start the server and the client via:
 npm run start-prod
 ````
 You can open the application on localhost with your specified `PORT_PROD`, e. g. [localhost:5000](http://localhost:5000).
+
+### Development mode
+It is necessary to start the express server for the backend and furthermore build the webpack bundle for the frontend. Use the following command to start the backend server:
+````
+npm run start-dev
+````
+In a new terminal window start generate the webpack development build for the client server:
+````
+npm run build-dev
+````
+Please note that both backend and backend server run on the same port. Requests from the client to the backend will be carried out via a proxy with a different port.
