@@ -36,10 +36,15 @@ dotenv.config();
 const apiKey = process.env.API_KEY;
 const apiURI = 'api.meaningcloud.com/sentiment-2.1';
 
-// The home page route
+// The home page routes
 app.get('/', (req, res) => {
   res.sendStatus(200);
-  res.sendFile('dist/index.html');
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile('dist/index.html');
+  }
+  if (process.env.NODE_ENV === 'development') {
+    res.redirect(301, `http://localhost:${process.env.PORT_DEV}`);
+  }
 });
 
 // Function and route to handle the provided URL from the client.
@@ -108,7 +113,7 @@ const getPort = () => {
     return process.env.PORT_PROD;
   }
   if (process.env.NODE_ENV === 'development') {
-    return process.env.PORT_DEV;
+    return process.env.PORT_DEV_PROXY;
   }
   return null;
 };
