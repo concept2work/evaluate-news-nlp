@@ -1,6 +1,6 @@
 // The function displays a loading spinner
 const showSpinner = () => {
-  document.getElementById('loading-status').className = 'd-flex justify-content-center mt-3';
+  document.getElementById('loading-status').className = 'd-flex justify-content-center pt-3 pb-3';
 };
 
 /*
@@ -23,6 +23,25 @@ const resetView = () => {
   }
 };
 
+/*
+  A message is displayed when getting results from the MeaningCloud API
+  takes longer than 10 seconds.
+*/
+const getLoadingMessage = () => {
+  setTimeout(() => {
+    const message = '<li class="list-group-item list-group-item-warning">Please have some patience, the sentiment analysis for longer texts takes a while.</li>';
+    const results = document.getElementById('results');
+    /*
+    The message is only displayed if there are no results yet. This prevents that results that
+    are retrieved before the timeout are overwritten.
+  */
+    if (!results.firstChild) {
+      resetView();
+      results.insertAdjacentHTML('beforeEnd', message);
+    }
+  }, 10000);
+};
+
 const updateResults = (response) => {
   // const responseObject = Object.entries(response);
   // eslint-disable-next-line no-restricted-syntax
@@ -31,9 +50,15 @@ const updateResults = (response) => {
   }
 };
 
-const getServerErrorMessage = (error) => `<li class="list-group-item list-group-item-danger">Sorry, there is no connection to the server at the moment. Please try again later. If the error persists please contact the website administrator and refer to the following error: <code>${error}</code></li>`;
+const getServerErrorMessage = (error) => {
+  resetView();
+  return `<li class="list-group-item list-group-item-danger">Sorry, there is no connection to the server at the moment. Please try again later. If the error persists please contact the website administrator and refer to the following error: <code>${error}</code></li>`;
+};
 
-const getUserErrorMessage = () => '<li class="list-group-item list-group-item-danger">The provided URL contains incorrect characters. Please check again.</li>';
+const getUserErrorMessage = () => {
+  resetView();
+  return '<li class="list-group-item list-group-item-danger">The provided URL contains incorrect characters. Please check again.</li>';
+};
 
 // Necessary JavaScript to run Service Worker
 const runServiceWorker = () => {
@@ -58,3 +83,4 @@ export { resetView };
 export { updateResults };
 export { getServerErrorMessage };
 export { getUserErrorMessage };
+export { getLoadingMessage };
