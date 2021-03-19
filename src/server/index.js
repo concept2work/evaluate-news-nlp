@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // Dotenv is used to read values from the .env file
 const dotenv = require('dotenv');
 
@@ -13,11 +14,11 @@ const bodyParser = require('body-parser');
 // Cors is used for cross origin allowance.
 const cors = require('cors');
 
-// Text responses from the server are integrated in an external module.
-const serverMessage = require('./lib/serverMessage.js');
-
 // An instance of app is started.
 const app = express();
+
+// Text responses from the server are integrated in an external module.
+const serverMessage = require('./lib/serverMessage.js');
 
 /*
   Empty JS objects act as endpoints for the routes regarding request and response data
@@ -57,7 +58,7 @@ app.post('/api/postUserInput', postUserInput);
 // Function to query the MeaningCloud API
 const getTextInformation = async (uri) => {
   const res = await fetch(uri);
-  console.log(`getTextInformation uri:${uri}`);
+  console.log(`get Info from MeaningCloud API: ${uri}`);
   try {
     // If the API sends OK, text information is returned.
     if (res.ok) {
@@ -70,7 +71,6 @@ const getTextInformation = async (uri) => {
       error message to the user.
     */
     if (!res.ok) {
-      // Todo: error handling
       const errorData = await res.json();
     }
   } catch (error) {
