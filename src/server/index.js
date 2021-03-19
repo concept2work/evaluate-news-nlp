@@ -38,7 +38,6 @@ const apiURI = 'api.meaningcloud.com/sentiment-2.1';
 
 // The home page routes
 app.get('/', (req, res) => {
-  res.sendStatus(200);
   if (process.env.NODE_ENV === 'production') {
     res.sendFile('dist/index.html');
   }
@@ -49,7 +48,6 @@ app.get('/', (req, res) => {
 
 // Function and route to handle the provided URL from the client.
 const postUserInput = (req, res) => {
-  res.sendStatus(200);
   requestData = {
     apiRequestUrl: req.body.apiRequestUrl,
   };
