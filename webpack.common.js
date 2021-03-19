@@ -1,6 +1,7 @@
 const path = require('path');
 const loader = require('sass-loader');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -25,6 +26,10 @@ module.exports = {
       verbose: true,
       cleanStaleWebpackAssets: true,
       protectWebpackAssets: false,
+    }),
+    new HtmlWebPackPlugin({
+      template: './src/client/views/index.html',
+      filename: './index.html',
     }),
   ],
 };
