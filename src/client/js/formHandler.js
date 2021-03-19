@@ -4,21 +4,20 @@ const updateIndex = require('./updateIndex.js');
   The URL that is submitted by the user in the form is sent to the server.
 */
 const postUserInput = async (url, data = {}) => {
-  try {
-    await fetch(url, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-  } catch (error) {
+  await fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  }).catch((error) => {
     updateIndex.resetView();
     updateIndex.removeSpinner();
     document.getElementById('results').insertAdjacentHTML('beforeEnd', updateIndex.getServerErrorMessage(error.message));
     console.error('the following error occured: ', error.message);
-  }
+  });
 };
 
 /*
@@ -134,7 +133,7 @@ const submitURL = (event) => {
           .then(
           // After receiving data from the server, the result is displayed.
             getProjectData(),
-          ).catch((error) => console.log(error));
+          );
         // If loading takes too long, a message is displayed.
         updateIndex.getLoadingMessage();
       }
