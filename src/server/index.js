@@ -31,6 +31,7 @@ app.use(express.static('dist'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.options('*', cors());
 
 dotenv.config();
 
