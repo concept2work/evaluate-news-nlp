@@ -29,7 +29,7 @@ const resetView = () => {
 */
 const getLoadingMessage = () => {
   setTimeout(() => {
-    const message = '<li class="list-group-item list-group-item-warning">Please have some patience, the sentiment analysis for longer texts takes a while.</li>';
+    const message = '<li class="list-group-item list-group-item-warning">Please have some patience, the sentiment analysis for the text of the provided website takes a little bit longer.</li>';
     const results = document.getElementById('results');
     /*
     The message is only displayed if there are no results yet. This prevents that results that
@@ -50,9 +50,9 @@ const updateResults = (response) => {
   }
 };
 
-const getServerErrorMessage = (error) => {
+const getServerErrorMessage = () => {
   resetView();
-  return `<li class="list-group-item list-group-item-danger">Sorry, there is no connection to the server at the moment. Please try again later. If the error persists please contact the website administrator and refer to the following error: <code>${error}</code></li>`;
+  return '<li class="list-group-item list-group-item-danger">Sorry, the connection to the server failed. Please try again later. If the error persists please contact the website administrator.</li>';
 };
 
 const getUserErrorMessage = () => {
