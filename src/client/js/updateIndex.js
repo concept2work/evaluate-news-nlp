@@ -50,10 +50,7 @@ const updateResults = (response) => {
   }
 };
 
-const getServerErrorMessage = () => {
-  resetView();
-  return '<li class="list-group-item list-group-item-danger">Sorry, the connection to the server failed. Please try again later. If the error persists please contact the website administrator.</li>';
-};
+const getServerErrorMessage = (error) => `<li class="list-group-item list-group-item-danger">Sorry, the connection to the server failed. Please try again later. If the error persists please contact the website administrator with these details: ${error}</li>`;
 
 const getUserErrorMessage = () => {
   resetView();
