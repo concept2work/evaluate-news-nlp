@@ -59,4 +59,3 @@ In a new terminal window start generate the webpack development build for the cl
 ````
 npm run build-dev
 ````
-Please note that both backend and backend server run on the same port. Requests from the client to the backend will be carried out via a proxy with a different port.
