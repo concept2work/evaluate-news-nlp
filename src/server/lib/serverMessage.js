@@ -50,4 +50,6 @@ exports.evaluateResponseData = (inputValue) => {
   return inputValue;
 };
 
-exports.getErrorMessage = (error) => `<li class="list-group-item list-group-item-danger">${error}.</li>`;
+exports.getErrorMessageApi = (error) => `<li class="list-group-item list-group-item-danger">MeaningCloud response: ${error}.</li>`;
+
+exports.getErrorMessageServer = (error) => '<li class="list-group-item list-group-item-danger">A processing error occured. This is caused because you submitted a website with a lot of content and the processing time of MeaningCloud took too long to be processed from the app\'s server.</li>';
