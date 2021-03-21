@@ -4,6 +4,7 @@ const updateIndex = require('./updateIndex.js');
   The URL that is submitted by the user in the form is sent to the server.
 */
 const postUserInput = async (url, data = {}) => {
+  console.log('postUserInput called');
   await fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -15,7 +16,7 @@ const postUserInput = async (url, data = {}) => {
   }).catch((error) => {
     updateIndex.resetView();
     updateIndex.removeSpinner();
-    document.getElementById('results').insertAdjacentHTML('beforeEnd', updateIndex.getServerErrorMessage(error.message));
+    document.getElementById('results').insertAdjacentHTML('beforeEnd', updateIndex.getServerErrorMessage());
     console.error('the following error occured: ', error.message);
   });
 };
@@ -37,8 +38,9 @@ const getProjectData = async () => {
     // The results are displayed.
     updateIndex.updateResults(response);
   } catch (error) {
+    updateIndex.resetView();
     updateIndex.removeSpinner();
-    document.getElementById('results').insertAdjacentHTML('beforeEnd', updateIndex.getServerErrorMessage(error.message));
+    document.getElementById('results').insertAdjacentHTML('beforeEnd', updateIndex.getServerErrorMessage());
     console.error('the following error occured: ', error.message);
   }
 };
@@ -127,14 +129,13 @@ const submitURL = (event) => {
       }
 
       if (validateURL(apiRequestUrl) === true) {
-        // setTimeout(updateIndex.getLoadingMessage(), 10000);
-
         postUserInput('/api/postUserInput', { apiRequestUrl })
           .then(
           // After receiving data from the server, the result is displayed.
             getProjectData(),
           );
         // If loading takes too long, a message is displayed.
+        console.log('getLoadingMessage called');
         updateIndex.getLoadingMessage();
       }
     }
