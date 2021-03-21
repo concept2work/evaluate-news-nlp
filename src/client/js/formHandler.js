@@ -4,7 +4,6 @@ const updateIndex = require('./updateIndex.js');
   The URL that is submitted by the user in the form is sent to the server.
 */
 const postUserInput = async (url, data = {}) => {
-  console.log('postUserInput called');
   await fetch(url, {
     method: 'POST',
     mode: 'cors',
@@ -135,7 +134,6 @@ const submitURL = (event) => {
             getProjectData(),
           );
         // If loading takes too long, a message is displayed.
-        console.log('getLoadingMessage called');
         updateIndex.getLoadingMessage();
       }
     }
