@@ -132,7 +132,7 @@ app.get('/api/getProjectData', (req, res, next) => {
 app.use((err, req, res, next) => {
   if (res.status(504)) {
     /*
-      Workaround to reset timeout adapted from Arup Rakshit
+      Workaround to reset timeout adapted from Marcos Casagrande and Arup Rakshit
       (https://stackoverflow.com/questions/55364401/express-js-connect-timeout-vs-server-timeout)
     */
     req.socket.removeAllListeners('timeout');
