@@ -17,8 +17,16 @@ const cors = require('cors');
 // An instance of app is started.
 const app = express();
 
+/*
+  Middleware to process timeouts
+*/
+const timeout = require('connect-timeout');
+
 // Text responses from the server are integrated in an external module.
 const serverMessage = require('./lib/serverMessage.js');
+
+// Library that allows the use of environment variables
+dotenv.config();
 
 /*
   Empty JS objects act as endpoints for the routes regarding request and response data
@@ -27,18 +35,23 @@ const serverMessage = require('./lib/serverMessage.js');
 let requestData = {};
 let responseData = {};
 
+// MeaningCloud specific values
+const apiKey = process.env.API_KEY;
+const apiURI = 'api.meaningcloud.com/sentiment-2.1';
+
+/*
+  Setting a timeout of 120 seconds (server standard time) for feedback
+  purposes in specific routes.
+*/
+const serverTimeOut = '120s';
+
 app.use(express.static('dist'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.options('*', cors());
+app.use(timeout(serverTimeOut));
 
-dotenv.config();
-
-const apiKey = process.env.API_KEY;
-const apiURI = 'api.meaningcloud.com/sentiment-2.1';
-
-// The home page routes
+// The home page routes are specified depending on mode
 app.get('/', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile('dist/index.html');
@@ -48,7 +61,7 @@ app.get('/', (req, res) => {
   }
 });
 
-// Function and route to handle the provided URL from the client.
+// Handling of the URL from the client that is to be processed by MeaningCloud.
 const postUserInput = (req, res) => {
   requestData = {
     apiRequestUrl: req.body.apiRequestUrl,
@@ -81,26 +94,55 @@ const getTextInformation = async (uri) => {
 };
 
 // Route to provide the client with the processed information from the MeaningCloud API
-app.get('/api/getProjectData', (req, res) => {
-  const apiRequest = `https://${apiURI}?key=${apiKey}&lang=auto&url=${requestData.apiRequestUrl}`;
-  getTextInformation(apiRequest)
-    .then((textInfo) => {
-      if (textInfo.status.code === '0') {
-        responseData = {
-          score_tag: serverMessage.evaluateResponseData(textInfo.score_tag),
-          agreement: serverMessage.evaluateResponseData(textInfo.agreement),
-          subjectivity: serverMessage.evaluateResponseData(textInfo.subjectivity),
-          confidence: serverMessage.evaluateResponseData(textInfo.confidence),
-          irony: serverMessage.evaluateResponseData(textInfo.irony),
-        };
-      }
-      if (textInfo.status.code !== '0') {
-        responseData = {
-          error: serverMessage.getErrorMessage(textInfo.status.msg),
-        };
-      }
-      res.send(responseData);
-    });
+app.get('/api/getProjectData', (req, res, next) => {
+  /*
+    A process for handling timeouts is included since responses from the
+    MeaningCloud API can take a long time depending on the contents on the
+    analyzed website. The solution including the handling of timed out requests
+    is adapted from John Au-Yeung
+    (https://medium.com/dataseries/add-timeout-capability-to-express-apps-with-connect-timeout-fce06d76e07a)
+  */
+  // If the request is taking too long, it is timed out and error handling is provided.
+  if (req.timedout) {
+    next();
+  } else {
+    const apiRequest = `https://${apiURI}?key=${apiKey}&lang=auto&url=${requestData.apiRequestUrl}`;
+    getTextInformation(apiRequest)
+      .then((textInfo) => {
+        if (textInfo.status.code === '0') {
+          responseData = {
+            score_tag: serverMessage.evaluateResponseData(textInfo.score_tag),
+            agreement: serverMessage.evaluateResponseData(textInfo.agreement),
+            subjectivity: serverMessage.evaluateResponseData(textInfo.subjectivity),
+            confidence: serverMessage.evaluateResponseData(textInfo.confidence),
+            irony: serverMessage.evaluateResponseData(textInfo.irony),
+          };
+        }
+        if (textInfo.status.code !== '0') {
+          responseData = {
+            error: serverMessage.getErrorMessageApi(textInfo.status.msg),
+          };
+        }
+        res.send(responseData);
+      });
+  }
+});
+
+// Error handling
+app.use((err, req, res, next) => {
+  if (res.status(504)) {
+    /*
+      Workaround to reset timeout adapted from Arup Rakshit
+      (https://stackoverflow.com/questions/55364401/express-js-connect-timeout-vs-server-timeout)
+    */
+    req.socket.removeAllListeners('timeout');
+    // Sending a timeout specific error message to the client
+    responseData = {
+      error: serverMessage.getErrorMessageServer(),
+    };
+    res.send(responseData);
+  }
+  next();
 });
 
 /*
