@@ -52,15 +52,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('dist'));
 }
 
-// In development mode the server redirects to to the frontend page.
+// In development mode the server redirects to to the frontend.
 app.get('/', (req, res, next) => {
-  if (process.env.NODE_ENV === 'development') {
-    res.redirect(301, `http://localhost:${process.env.PORT_DEV}`);
-  }
-  next();
-});
-
-app.get('/redirect', (req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     res.redirect(301, `http://localhost:${process.env.PORT_DEV}`);
   }
