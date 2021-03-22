@@ -47,11 +47,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(timeout(serverTimeOut));
 
-// The home page routes are specified depending on mode
+// In production mode the home page is set to the index file in the dist folder.
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('dist'));
+}
+
+// In development mode the server redirects to to the frontend page.
 app.get('/', (req, res, next) => {
-  if (process.env.NODE_ENV === 'production') {
-    res.sendFile('dist/index.html');
+  if (process.env.NODE_ENV === 'development') {
+    res.redirect(301, `http://localhost:${process.env.PORT_DEV}`);
   }
+  next();
+});
+
+app.get('/redirect', (req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     res.redirect(301, `http://localhost:${process.env.PORT_DEV}`);
   }
