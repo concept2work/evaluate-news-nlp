@@ -141,7 +141,7 @@ const submitURL = (event) => {
       }
 
       if (validateURL(apiRequestUrl) === true) {
-        postUserInput('/api/postUserInput', { apiRequestUrl })
+        postUserInput(queryLocalServer('/api/postUserInput'), { apiRequestUrl })
           .then(
           // After receiving data from the server, the result is displayed.
             getProjectData(),
