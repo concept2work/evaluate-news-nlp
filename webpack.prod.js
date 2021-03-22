@@ -5,12 +5,8 @@ const TerserPlugin = require('terser-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const common = require('./webpack.common.js');
 
-const {
-  NODE_ENV: mode,
-} = process.env;
-
 module.exports = merge(common, {
-  mode,
+  mode: 'production',
   devtool: 'nosources-source-map',
   optimization: {
     minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})],
