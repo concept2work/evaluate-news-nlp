@@ -8,9 +8,6 @@ const fetch = require('node-fetch');
 // Express is used to run server and routes.
 const express = require('express');
 
-// Body-parser is used as middle-ware.
-const bodyParser = require('body-parser');
-
 // Cors is used for cross origin allowance.
 const cors = require('cors');
 
@@ -45,20 +42,20 @@ const apiURI = 'api.meaningcloud.com/sentiment-2.1';
 */
 const serverTimeOut = '120s';
 
-app.use(express.static('dist'));
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(timeout(serverTimeOut));
 
 // The home page routes are specified depending on mode
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile('dist/index.html');
   }
   if (process.env.NODE_ENV === 'development') {
     res.redirect(301, `http://localhost:${process.env.PORT_DEV}`);
   }
+  next();
 });
 
 // Handling of the URL from the client that is to be processed by MeaningCloud.
