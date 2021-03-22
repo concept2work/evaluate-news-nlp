@@ -1,18 +1,23 @@
 const { merge } = require('webpack-merge');
 const dotenv = require('dotenv').config({ path: './.env' });
-const HtmlWebPackPlugin = require('html-webpack-plugin');
 const common = require('./webpack.common.js');
 
+const {
+  PORT_DEV: port,
+  NODE_ENV: mode,
+  PORT_DEV_PROXY: proxyport,
+} = process.env;
+
 module.exports = merge(common, {
-  mode: 'development',
+  mode,
   devtool: 'source-map',
   devServer: {
     historyApiFallback: true,
     hot: true,
     inline: true,
-    port: process.env.PORT_DEV,
+    port,
     proxy: {
-      '/api': `http://localhost:${process.env.PORT_DEV_PROXY}`,
+      '/api': `http://localhost:${proxyport}`,
     },
   },
   module: {
