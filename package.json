@@ -4,10 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start-prod": "NODE_ENV=production node src/server/index.js",
-    "build-prod": "webpack --config webpack.prod.js",
-    "start-dev": "NODE_ENV=development nodemon ./src/server/index.js",
-    "build-dev": "webpack-dev-server --config webpack.dev.js --open"
+    "start-prod": "NODE_ENV=production PORT_PROD=5000 node src/server/index.js",
+    "build-prod": "webpack --config webpack.prod.js --define process.env.PORT_PROD=5000",
+    "start-dev": "NODE_ENV=development PORT_DEV_PROXY=4000 nodemon ./src/server/index.js",
+    "build-dev": "webpack-dev-server --config webpack.dev.js --open --define process.env.PORT_DEV=3000 --define process.env.PORT_DEV_PROXY=4000"
   },
   "keywords": [],
   "author": "",
