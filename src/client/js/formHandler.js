@@ -1,5 +1,18 @@
 const updateIndex = require('./updateIndex.js');
 
+// Function that sets the whole server path to a relative API path
+const queryLocalServer = (path) => {
+  if (process.env.NODE_ENV === 'production') {
+    const localhost = `http://localhost:${process.env.PORT_PROD}`;
+    return new URL(path, localhost);
+  }
+  if (process.env.NODE_ENV === 'development') {
+    const localhost = `http://localhost:${process.env.PORT_DEV}`;
+    return new URL(path, localhost);
+  }
+  return null;
+};
+
 /*
   The URL that is submitted by the user in the form is sent to the server.
 */
@@ -24,7 +37,7 @@ const postUserInput = async (url, data = {}) => {
   The sentiment analysis is received from the server.
 */
 const getProjectData = async () => {
-  const res = await fetch('/api/getProjectData');
+  const res = await fetch(queryLocalServer('/api/getProjectData'));
   try {
     const response = await res.json();
 
